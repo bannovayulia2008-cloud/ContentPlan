@@ -1,0 +1,519 @@
+<style>
+  :root {
+    --bg: #f7efea;
+    --bg-elevated: #ffffff;
+    --ink: #33212c;
+    --ink-soft: #7a6670;
+    --ink-faint: #a89aa1;
+    --accent: #b5495b;
+    --accent-ink: #ffffff;
+    --accent-soft: #f0d9dc;
+    --accent-soft-line: #e3bcc2;
+    --done: #6f8f63;
+    --done-soft: #e2ead9;
+    --line: #e6d9d0;
+    --line-strong: #d9c7bc;
+    --shadow: 0 1px 2px rgba(51, 33, 44, 0.06), 0 8px 24px -12px rgba(51, 33, 44, 0.18);
+    --radius: 10px;
+    --serif: Iowan Old Style, "Palatino Linotype", Palatino, Georgia, "Noto Serif", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --r-day: #b5495b;
+    --r-top: #3c8c6e;
+    --r-psych: #5a6fb0;
+    --r-myth: #8a4fae;
+    --r-steps: #3a8f96;
+    --r-planner: #b9812a;
+    --r-meme: #c04f86;
+    --r-youtube: #a4433f;
+    --r-pin: #96436e;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #221720;
+      --bg-elevated: #2c1f29;
+      --ink: #f3e7ec;
+      --ink-soft: #c2acb6;
+      --ink-faint: #8a7480;
+      --accent: #e48a9a;
+      --accent-ink: #2a141b;
+      --accent-soft: #3d2733;
+      --accent-soft-line: #55323f;
+      --done: #93b385;
+      --done-soft: #33402c;
+      --line: #3d2a34;
+      --line-strong: #4c3540;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+      --r-day: #e48a9a;
+      --r-top: #6fbf9c;
+      --r-psych: #8b9de0;
+      --r-myth: #c397e3;
+      --r-steps: #67c2c9;
+      --r-planner: #e0ab54;
+      --r-meme: #e084b1;
+      --r-youtube: #e2827c;
+      --r-pin: #de8bb4;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #221720; --bg-elevated: #2c1f29; --ink: #f3e7ec; --ink-soft: #c2acb6; --ink-faint: #8a7480;
+    --accent: #e48a9a; --accent-ink: #2a141b; --accent-soft: #3d2733; --accent-soft-line: #55323f;
+    --done: #93b385; --done-soft: #33402c; --line: #3d2a34; --line-strong: #4c3540;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    --r-day: #e48a9a; --r-top: #6fbf9c; --r-psych: #8b9de0; --r-myth: #c397e3; --r-steps: #67c2c9; --r-planner: #e0ab54; --r-meme: #e084b1;
+    --r-youtube: #e2827c; --r-pin: #de8bb4;
+  }
+  :root[data-theme="light"] {
+    --bg: #f7efea; --bg-elevated: #ffffff; --ink: #33212c; --ink-soft: #7a6670; --ink-faint: #a89aa1;
+    --accent: #b5495b; --accent-ink: #ffffff; --accent-soft: #f0d9dc; --accent-soft-line: #e3bcc2;
+    --done: #6f8f63; --done-soft: #e2ead9; --line: #e6d9d0; --line-strong: #d9c7bc;
+    --shadow: 0 1px 2px rgba(51, 33, 44, 0.06), 0 8px 24px -12px rgba(51, 33, 44, 0.18);
+    --r-day: #b5495b; --r-top: #3c8c6e; --r-psych: #5a6fb0; --r-myth: #8a4fae; --r-steps: #3a8f96; --r-planner: #b9812a; --r-meme: #c04f86;
+    --r-youtube: #a4433f; --r-pin: #96436e;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.45; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent-soft); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  header { display: flex; flex-direction: column; gap: 4px; margin-bottom: 22px; }
+  .eyebrow { font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 4vw, 34px); margin: 2px 0 2px; text-wrap: balance; }
+  .sub { color: var(--ink-soft); font-size: 14.5px; max-width: 64ch; }
+  .cadence { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); background: var(--bg-elevated); border: 1px solid var(--line); padding: 5px 12px; border-radius: 999px; width: fit-content; }
+  .cadence b { color: var(--ink); }
+
+  /* ---------- Progress banner ---------- */
+  .phase { background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; margin-top: 20px; display: grid; grid-template-columns: 1.3fr auto; gap: 20px; align-items: center; }
+  .phase-title { font-family: var(--serif); font-size: 17px; margin: 0 0 6px; }
+  .phase-goals { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--ink-soft); }
+  .phase-goals b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .progress-block { text-align: right; min-width: 150px; }
+  .progress-num { font-family: var(--serif); font-size: 30px; font-variant-numeric: tabular-nums; line-height: 1; }
+  .progress-num span { font-size: 15px; color: var(--ink-faint); }
+  .progress-label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px; }
+  .bar { margin-top: 8px; height: 6px; border-radius: 4px; background: var(--line); overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s ease; }
+
+  section.block { margin-top: 30px; }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: 18px; margin: 0 0 12px; display: flex; align-items: baseline; gap: 8px; }
+  h2 .count { font-size: 12px; color: var(--ink-faint); font-family: var(--sans); font-variant-numeric: tabular-nums; }
+  h2 .note { font-size: 12.5px; color: var(--ink-faint); font-family: var(--sans); font-weight: 400; }
+
+  /* ---------- Priorities ---------- */
+  .priority-list { display: flex; flex-direction: column; gap: 8px; }
+  .priority-item { display: flex; align-items: flex-start; gap: 12px; background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; }
+  .priority-item .txt { font-size: 14px; }
+  .priority-item .txt b { display: block; font-weight: 600; margin-bottom: 2px; }
+  .priority-item .txt span { color: var(--ink-soft); font-size: 13px; }
+  .priority-item.done .txt, .priority-item.done .txt b, .priority-item.done .txt span { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+
+  .chk { flex: 0 0 auto; width: 19px; height: 19px; border-radius: 5px; border: 1.5px solid var(--line-strong); background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .chk svg { width: 12px; height: 12px; opacity: 0; transform: scale(0.6); transition: opacity 0.12s, transform 0.12s; }
+  .chk.checked { background: var(--done); border-color: var(--done); }
+  .chk.checked svg { opacity: 1; transform: scale(1); stroke: var(--done-soft); }
+  .task:focus-visible .chk, .priority-item:focus-visible .chk { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- Stats ---------- */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .stat-card { background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
+  .stat-card .rtag { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .rdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .stat-card .nums { font-family: var(--serif); font-size: 21px; font-variant-numeric: tabular-nums; }
+  .stat-card .nums span { font-size: 13px; color: var(--ink-faint); font-family: var(--sans); }
+  .stat-card .mini-bar { margin-top: 6px; height: 4px; border-radius: 3px; background: var(--line); overflow: hidden; }
+  .stat-card .mini-fill { height: 100%; border-radius: 3px; }
+  .stat-card.total { background: var(--accent-soft); border-color: var(--accent-soft-line); }
+
+  /* ---------- Calendar (vertical agenda) ---------- */
+  .week { margin-bottom: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-elevated); box-shadow: var(--shadow); overflow: hidden; }
+  .week-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: linear-gradient(var(--accent-soft), transparent); }
+  .week-head .wk-label { font-family: var(--serif); font-size: 15px; }
+  .week-head .wk-range { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .week-head .wk-progress { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  .day-row { display: grid; grid-template-columns: 96px 1fr 1fr 150px; border-top: 1px solid var(--line); }
+  .day-row:first-of-type { border-top: none; }
+  .day-col { padding: 11px 12px; display: flex; flex-direction: column; justify-content: center; }
+  .day-label { border-right: 1px solid var(--line); background: var(--bg); }
+  .day-num { font-family: var(--serif); font-size: 18px; font-variant-numeric: tabular-nums; }
+  .day-dow { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
+  .day-row.today .day-label { background: var(--accent-soft); }
+  .day-row.today .day-num { color: var(--accent); font-weight: 600; }
+
+  .reel-col { border-right: 1px solid var(--line); }
+  .task { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+  .task .body { display: flex; flex-direction: column; gap: 2px; }
+  .task .meta { display: flex; align-items: center; gap: 6px; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); }
+  .task .meta .time { color: var(--ink-faint); font-variant-numeric: tabular-nums; text-transform: none; letter-spacing: 0; }
+  .task .cap { font-size: 12.5px; color: var(--ink); line-height: 1.4; }
+  .task.checked .cap { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+  .task.checked .meta { opacity: 0.55; }
+
+  .tg-col { display: flex; align-items: center; }
+  .tg-col .task .cap { font-size: 12.5px; }
+
+  /* Saturday batch strip */
+  .day-extra { border-top: 1px solid var(--line); background: var(--accent-soft); padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .day-extra .task .cap { font-size: 12.5px; font-weight: 500; }
+  .day-extra .task { flex: 0 0 auto; }
+  .day-extra-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); width: 100%; margin-bottom: -2px; }
+
+  footer { margin-top: 34px; font-size: 12px; color: var(--ink-faint); border-top: 1px solid var(--line); padding-top: 14px; }
+
+  .after-note { margin-top: 18px; border: 1px dashed var(--line-strong); border-radius: var(--radius); padding: 14px 18px; font-size: 13px; color: var(--ink-soft); background: var(--bg-elevated); }
+  .after-note b { color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .phase { grid-template-columns: 1fr; }
+    .progress-block { text-align: left; }
+    .day-row { grid-template-columns: 72px 1fr; }
+    .day-label { grid-row: span 3; }
+    .reel-col, .tg-col { border-right: none; border-top: 1px solid var(--line); }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Юлия Плахина · @plakhina.yuliya</div>
+    <h1>Контент-трекер: июль–август 2026</h1>
+    <div class="sub">Детальный контент-план на 4 недели — с 13 июля. Отмечай выполненные рилсы и посты, прогресс сохраняется в этом браузере.</div>
+    <div class="cadence">💙 <b>2 рилса в день</b> — утром рубрика, вечером «День восстановления»</div>
+  </header>
+
+  <div class="phase">
+    <div>
+      <p class="phase-title">Цель фазы (июль–август)</p>
+      <div class="phase-goals">
+        <div>Подписчики: <b>4 000–6 000</b></div>
+        <div>Выручка: <b>150–300к ₽</b></div>
+        <div>Запуск: <b>тренировки для восстановления</b></div>
+        <div>YouTube: <b>2 видео</b></div>
+      </div>
+    </div>
+    <div class="progress-block">
+      <div class="progress-num" id="overallNum">0<span>%</span></div>
+      <div class="progress-label">Выполнено задач</div>
+      <div class="bar"><div class="bar-fill" id="overallBar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Приоритеты фазы <span class="count" id="priCount"></span></h2>
+    <div class="priority-list" id="priorityList"></div>
+  </section>
+
+  <section class="block">
+    <h2>Рубрики <span class="note">план / готово за месяц</span></h2>
+    <div class="stats-grid" id="statsGrid"></div>
+  </section>
+
+  <section class="block">
+    <h2>Календарь публикаций <span class="count" id="calCount"></span></h2>
+    <div id="calendar"></div>
+    <div class="after-note">Дальше в плане — пауза: <b>«Следующий месяц планируем через 3 недели»</b>. Как только появится расписание на вторую половину августа, календарь можно продлить.</div>
+  </section>
+
+  <footer>Источник: content-plan-july-august-plakhina.md · brand-strategy-plakhina.md, июль 2026.</footer>
+</div>
+
+<script>
+(function () {
+  var STORE_KEY = "plakhina-content-tracker-v3";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (e) { state = {}; }
+  function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+  function checkSvg() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+  }
+
+  /* ---------------- Rubrics ---------------- */
+  var RUBRIC = {
+    day:     { icon: "💙", label: "День X восстановления", varc: "--r-day" },
+    top:     { icon: "🏆", label: "Топ упражнений",          varc: "--r-top" },
+    psych:   { icon: "🧠", label: "Психологическая поддержка", varc: "--r-psych" },
+    myth:    { icon: "❌", label: "Мифы и правда",           varc: "--r-myth" },
+    steps:   { icon: "👣", label: "Маленькими шагами",       varc: "--r-steps" },
+    planner: { icon: "📓", label: "Планер",                  varc: "--r-planner" },
+    meme:    { icon: "😂", label: "Мемный ролик",            varc: "--r-meme" }
+  };
+  var PLANNED = { day: 28, top: 8, psych: 4, myth: 4, steps: 4, planner: 4, meme: 4 };
+  // weekday -> rubric for reel #1 (used only to build the day's caption, no reference table shown)
+  var weekStruct = ["top", "psych", "myth", "steps", "planner", "meme", "top"]; // Mon..Sun
+
+  /* ---------------- Priorities (from brand-strategy-plakhina.md) ---------------- */
+  var priorities = [
+    { id: "pri-funnel", title: "Починить воронку", desc: "CTA в каждом рилсе + цепочка из 4 сообщений в боте после «Сделала»" },
+    { id: "pri-recovery", title: "Запустить тренировки для восстановления", desc: "Второй продукт линейки — закрывает личную историю" },
+    { id: "pri-yt1", title: "Снять YouTube видео №1", desc: "«Почему тело держит стресс и что с этим делать»" },
+    { id: "pri-header", title: "Обновить шапку профиля", desc: "Юлия Плахина · Помогаю готовить тело к родам и мягко восстанавливаться после" }
+  ];
+  var priListEl = document.getElementById("priorityList");
+  priorities.forEach(function (p) {
+    var row = document.createElement("div");
+    row.className = "priority-item" + (state[p.id] ? " done" : "");
+    row.innerHTML =
+      '<span class="chk' + (state[p.id] ? " checked" : "") + '">' + checkSvg() + "</span>" +
+      '<span class="txt"><b>' + p.title + "</b><span>" + p.desc + "</span></span>";
+    row.addEventListener("click", function () {
+      state[p.id] = !state[p.id];
+      save();
+      row.classList.toggle("done", !!state[p.id]);
+      row.querySelector(".chk").classList.toggle("checked", !!state[p.id]);
+      updatePriCount();
+    });
+    priListEl.appendChild(row);
+  });
+  function updatePriCount() {
+    var done = priorities.filter(function (p) { return state[p.id]; }).length;
+    document.getElementById("priCount").textContent = done + " / " + priorities.length;
+  }
+
+  /* ---------------- 4 weeks of real content, Mon 13 Jul 2026 start ---------------- */
+  var weeksData = [
+    { rubricCaptions: [
+      "Топ-3 упражнения для тазового дна — делай прямо сейчас, где бы ты ни была",
+      "Ты злишься на ребёнка — и это не значит что ты плохая мать",
+      "Миф: нельзя качать пресс после родов целый год. Правда: зависит от одной вещи",
+      "15 минут в день = почти 100 часов в год. Вот что я успела за эти часы в декрете",
+      "У меня под кроватью живут 990 человек 👀",
+      "Ожидание: сплю пока ребёнок спит. Реальность: [смотришь в потолок с открытыми глазами]",
+      "5 упражнений при болях в пояснице во время беременности"
+    ] },
+    { rubricCaptions: [
+      "Топ-4 для снятия отёков — работает за 15 минут",
+      "Почему ты плачешь и сама не знаешь почему — объясняю без осуждения",
+      "Миф: грудное вскармливание помогает похудеть. Правда: не всегда и не всем",
+      "Как я похудела не считая калории — просто одно маленькое действие в день",
+      "Что внутри моего планера — показываю постранично (никаких секретов)",
+      "Лицо сына когда мама начинает упражнения — и его лицо когда мама заканчивает",
+      "3 упражнения для раскрытия таза перед родами"
+    ] },
+    { rubricCaptions: [
+      "Топ-4 дыхательных практики — для беременных и после родов",
+      "«Я не чувствую любви к ребёнку» — это бывает. И вот почему",
+      "Миф: беременным нельзя заниматься спортом. Правда: можно. И нужно",
+      "Как я планирую жизнь с новорождённым: без давления, без вины, с удовольствием",
+      "Один вопрос из планера который изменил моё утро",
+      "POV: пытаешься сделать сторис с ребёнком на руках",
+      "4 упражнения которые можно делать с малышом на руках"
+    ] },
+    { rubricCaptions: [
+      "Топ-3 для расслабления — когда тревога и нет сил ни на что",
+      "Ты не обязана испытывать счастье 24/7. Даже если только что родила",
+      "Миф: после родов надо подождать 6 недель и только потом двигаться. Правда:",
+      "Почему «с понедельника» не работает — и с чего реально начинать",
+      "Планер как подарок беременной подруге — почему это лучше очередного бодика",
+      "До родов: буду делать упражнения каждый день. После родов: сделала 3 раза за месяц и горжусь собой",
+      "Топ-5 для восстановления живота после родов — мягко и без вреда"
+    ] }
+  ];
+
+  // Saturdays with a YouTube shoot: weeks 0, 2, and 3 (18 Jul, 1 Aug, 8 Aug)
+  var YT_WEEKS = [0, 2, 3];
+
+  var start = new Date(2026, 6, 13); // Mon 13 Jul 2026
+  var dowShort = ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];
+  var monthNames = ["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+
+  function isoKey(dt) { return dt.getFullYear() + "-" + String(dt.getMonth()+1).padStart(2,"0") + "-" + String(dt.getDate()).padStart(2,"0"); }
+  var todayKey = isoKey(new Date());
+  function taskId(dt, name) { return "t-" + isoKey(dt) + "-" + name; }
+
+  /* ---------------- Stats ---------------- */
+  var statsEl = document.getElementById("statsGrid");
+  function renderStats() {
+    var doneCounts = { day: 0, top: 0, psych: 0, myth: 0, steps: 0, planner: 0, meme: 0 };
+    var ytDone = 0, pinWeeksDone = 0;
+    Object.keys(state).forEach(function (id) {
+      if (!state[id]) return;
+      var m = id.match(/^t-\d{4}-\d{2}-\d{2}-(day|top|psych|myth|steps|planner|meme)$/);
+      if (m) doneCounts[m[1]]++;
+      if (/^t-\d{4}-\d{2}-\d{2}-yt$/.test(id)) ytDone++;
+      if (/^t-\d{4}-\d{2}-\d{2}-pin$/.test(id)) pinWeeksDone++;
+    });
+
+    var html = "";
+    var totalPlanned = 0, totalDone = 0;
+    Object.keys(RUBRIC).forEach(function (key) {
+      var r = RUBRIC[key];
+      var planned = PLANNED[key];
+      var done = Math.min(doneCounts[key] || 0, planned);
+      totalPlanned += planned; totalDone += done;
+      var pct = planned ? Math.round((done / planned) * 100) : 0;
+      html += '<div class="stat-card"><div class="rtag"><span class="rdot" style="background:var(' + r.varc + ')"></span>' + r.icon + ' ' + r.label + '</div>' +
+        '<div class="nums">' + done + '<span> / ' + planned + '</span></div>' +
+        '<div class="mini-bar"><div class="mini-fill" style="width:' + pct + '%;background:var(' + r.varc + ')"></div></div></div>';
+    });
+
+    var ytPlanned = 3;
+    var ytPct = Math.round((Math.min(ytDone, ytPlanned) / ytPlanned) * 100);
+    html += '<div class="stat-card"><div class="rtag"><span class="rdot" style="background:var(--r-youtube)"></span>🎥 YouTube</div>' +
+      '<div class="nums">' + Math.min(ytDone, ytPlanned) + '<span> / ' + ytPlanned + '</span></div>' +
+      '<div class="mini-bar"><div class="mini-fill" style="width:' + ytPct + '%;background:var(--r-youtube)"></div></div></div>';
+
+    var pinPlanned = 56;
+    var pinDone = Math.min(pinWeeksDone * 14, pinPlanned);
+    var pinPct = Math.round((pinDone / pinPlanned) * 100);
+    html += '<div class="stat-card"><div class="rtag"><span class="rdot" style="background:var(--r-pin)"></span>📌 Pinterest</div>' +
+      '<div class="nums">' + pinDone + '<span> / ' + pinPlanned + '</span></div>' +
+      '<div class="mini-bar"><div class="mini-fill" style="width:' + pinPct + '%;background:var(--r-pin)"></div></div></div>';
+
+    totalPlanned += ytPlanned + pinPlanned;
+    totalDone += Math.min(ytDone, ytPlanned) + pinDone;
+
+    html += '<div class="stat-card total"><div class="rtag">Всего рилсов + видео + пины</div><div class="nums">' + totalDone + '<span> / ' + totalPlanned + '</span></div>' +
+      '<div class="mini-bar"><div class="mini-fill" style="width:' + (totalPlanned ? Math.round(totalDone/totalPlanned*100) : 0) + '%;background:var(--accent)"></div></div></div>';
+
+    statsEl.innerHTML = html;
+  }
+
+  /* ---------------- Calendar ---------------- */
+  var calEl = document.getElementById("calendar");
+
+  function makeTask(id, opts) {
+    opts = opts || {};
+    var checked = !!state[id];
+    var wrap = document.createElement("div");
+    wrap.className = "task" + (checked ? " checked" : "");
+
+    var bodyHtml = "";
+    if (opts.label) {
+      bodyHtml += '<div class="meta">' +
+        (opts.colorVar ? '<span class="rdot" style="background:var(' + opts.colorVar + ')"></span>' : '') +
+        '<span>' + opts.label + '</span>' +
+        (opts.time ? '<span class="time">' + opts.time + '</span>' : '') +
+        '</div>';
+    }
+    if (opts.caption) bodyHtml += '<div class="cap">' + opts.caption + '</div>';
+
+    wrap.innerHTML = '<span class="chk' + (checked ? " checked" : "") + '">' + checkSvg() + '</span>' +
+      '<span class="body">' + bodyHtml + '</span>';
+
+    wrap.addEventListener("click", function () {
+      state[id] = !state[id];
+      save();
+      wrap.classList.toggle("checked", !!state[id]);
+      wrap.querySelector(".chk").classList.toggle("checked", !!state[id]);
+      updateProgress();
+    });
+    return wrap;
+  }
+
+  function renderCalendar() {
+    calEl.innerHTML = "";
+
+    weeksData.forEach(function (wd, wIdx) {
+      var weekStart = new Date(start);
+      weekStart.setDate(start.getDate() + wIdx * 7);
+      var weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+
+      var weekWrap = document.createElement("div");
+      weekWrap.className = "week";
+
+      var rangeLabel = weekStart.getDate() + " " + monthNames[weekStart.getMonth()] + " — " + weekEnd.getDate() + " " + monthNames[weekEnd.getMonth()];
+
+      var head = document.createElement("div");
+      head.className = "week-head";
+      head.innerHTML = '<span class="wk-label">Неделя ' + (wIdx + 1) + '</span>' +
+        '<span class="wk-range">' + rangeLabel + '</span>' +
+        '<span class="wk-progress" data-wk="' + wIdx + '"></span>';
+      weekWrap.appendChild(head);
+
+      for (var i = 0; i < 7; i++) {
+        var dt = new Date(weekStart);
+        dt.setDate(weekStart.getDate() + i);
+        var key = isoKey(dt);
+        var isSaturday = (i === 5);
+        var rubKey = weekStruct[i];
+        var rub = RUBRIC[rubKey];
+        var rubCaption = wd.rubricCaptions[i];
+
+        var row = document.createElement("div");
+        row.className = "day-row" + (key === todayKey ? " today" : "");
+
+        var labelCol = document.createElement("div");
+        labelCol.className = "day-col day-label";
+        labelCol.innerHTML = '<div class="day-num">' + dt.getDate() + ' ' + monthNames[dt.getMonth()] + '</div><div class="day-dow">' + dowShort[dt.getDay()] + '</div>';
+        row.appendChild(labelCol);
+
+        var col1 = document.createElement("div");
+        col1.className = "day-col reel-col";
+        col1.appendChild(makeTask(taskId(dt, rubKey), { colorVar: rub.varc, time: "09:00–11:00", label: rub.icon + " " + rub.label, caption: rubCaption }));
+        row.appendChild(col1);
+
+        var col2 = document.createElement("div");
+        col2.className = "day-col reel-col";
+        col2.appendChild(makeTask(taskId(dt, "day"), { colorVar: "--r-day", time: "18:00–20:00", label: "💙 День X восстановления" }));
+        row.appendChild(col2);
+
+        var col3 = document.createElement("div");
+        col3.className = "day-col tg-col";
+        col3.appendChild(makeTask(taskId(dt, "tg"), { caption: "📨 Пост в Телеграм" }));
+        row.appendChild(col3);
+
+        weekWrap.appendChild(row);
+
+        if (isSaturday) {
+          var extra = document.createElement("div");
+          extra.className = "day-extra";
+          var extraLabel = document.createElement("div");
+          extraLabel.className = "day-extra-label";
+          extraLabel.textContent = "План на субботу — пакет недели";
+          extra.appendChild(extraLabel);
+          extra.appendChild(makeTask(taskId(dt, "shoot"), { colorVar: "--accent", label: "🎬 Съёмочный день — 4–5 рилсов пакетом" }));
+          extra.appendChild(makeTask(taskId(dt, "pin"), { colorVar: "--r-pin", label: "📌 Обложки рилсов в Пинтерест" }));
+          if (YT_WEEKS.indexOf(wIdx) !== -1) {
+            extra.appendChild(makeTask(taskId(dt, "yt"), { colorVar: "--r-youtube", label: "🎥 Съёмка YouTube-видео" }));
+          }
+          weekWrap.appendChild(extra);
+        }
+      }
+
+      calEl.appendChild(weekWrap);
+    });
+
+    document.getElementById("calCount").textContent = "13 июля — 9 августа · 4 недели";
+    updateProgress();
+  }
+
+  function collectWeekIds(wIdx) {
+    var ids = [];
+    for (var i = 0; i < 7; i++) {
+      var dt = new Date(start);
+      dt.setDate(start.getDate() + wIdx * 7 + i);
+      ids.push(taskId(dt, weekStruct[i]), taskId(dt, "day"), taskId(dt, "tg"));
+      if (i === 5) {
+        ids.push(taskId(dt, "shoot"), taskId(dt, "pin"));
+        if (YT_WEEKS.indexOf(wIdx) !== -1) ids.push(taskId(dt, "yt"));
+      }
+    }
+    return ids;
+  }
+
+  function updateProgress() {
+    var allIds = [];
+    weeksData.forEach(function (wd, wIdx) { allIds = allIds.concat(collectWeekIds(wIdx)); });
+    var done = allIds.filter(function (id) { return state[id]; }).length;
+    var pct = allIds.length ? Math.round((done / allIds.length) * 100) : 0;
+    document.getElementById("overallNum").innerHTML = pct + "<span>%</span>";
+    document.getElementById("overallBar").style.width = pct + "%";
+
+    weeksData.forEach(function (wd, wIdx) {
+      var ids = collectWeekIds(wIdx);
+      var wDone = ids.filter(function (id) { return state[id]; }).length;
+      var el = document.querySelector('.wk-progress[data-wk="' + wIdx + '"]');
+      if (el) el.textContent = wDone + " / " + ids.length;
+    });
+
+    renderStats();
+    updatePriCount();
+  }
+
+  renderCalendar();
+})();
+</script>
